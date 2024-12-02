@@ -5,6 +5,11 @@ import gleam/io
 pub fn main() {
   io.println("Hello from advent_of_code!")
   io.println(
-    "Day 1 - Historian Hysteria: " <> int.to_string(historian_hysteria.solve()),
+    "Day 1 - Historian Hysteria Part 1: "
+    <> int.to_string(historian_hysteria.part1()),
+  )
+  io.println(
+    "Day 1 - Historian Hysteria Part 2: "
+    <> int.to_string(historian_hysteria.part2()),
   )
 }
