@@ -49,15 +49,14 @@ fn get_both_lists() {
 
   let assert Ok(input) = simplifile.read(from: filepath)
 
-  let #(left_list, right_list) =
-    input
-    |> string.split("\n")
-    |> list.filter(fn(line) { !string.is_empty(line) })
-    |> list.map(fn(number_pair) {
-      let assert Ok(#(left, right)) = string.split_once(number_pair, "   ")
-      let assert Ok(left_number) = int.parse(left)
-      let assert Ok(right_number) = int.parse(right)
-      #(left_number, right_number)
-    })
-    |> list.unzip
+  input
+  |> string.split("\n")
+  |> list.filter(fn(line) { !string.is_empty(line) })
+  |> list.map(fn(number_pair) {
+    let assert Ok(#(left, right)) = string.split_once(number_pair, "   ")
+    let assert Ok(left_number) = int.parse(left)
+    let assert Ok(right_number) = int.parse(right)
+    #(left_number, right_number)
+  })
+  |> list.unzip
 }
