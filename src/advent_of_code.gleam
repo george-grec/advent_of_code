@@ -17,4 +17,8 @@ pub fn main() {
     "Day 2 - Red-Nosed Reports Part 1: "
     <> int.to_string(red_nosed_reports.part1()),
   )
+  io.println(
+    "Day 2 - Red-Nosed Reports Part 2: "
+    <> int.to_string(red_nosed_reports.part2()),
+  )
 }
