@@ -25,4 +25,7 @@ pub fn main() {
   io.println(
     "Day 3 - Mull It Over Part 1: " <> int.to_string(mull_it_over.part1()),
   )
+  io.println(
+    "Day 3 - Mull It Over Part 2: " <> int.to_string(mull_it_over.part2()),
+  )
 }

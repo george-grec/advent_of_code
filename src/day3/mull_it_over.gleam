@@ -1,3 +1,4 @@
+import gleam/bool
 import gleam/int
 import gleam/string
 import simplifile
@@ -6,11 +7,67 @@ pub fn part1() {
   let filepath = "./src/day3/input.txt"
 
   let assert Ok(input) = simplifile.read(from: filepath)
-  parse_mul(input)
+  parse_mul_rec(input, START, 0)
 }
 
-fn parse_mul(input: String) {
-  parse_mul_rec(input, START, 0)
+pub fn part2() {
+  let filepath = "./src/day3/input.txt"
+
+  let assert Ok(input) = simplifile.read(from: filepath)
+  parse_mul_rec2(input, 0, True)
+}
+
+fn parse_mul_rec2(input: String, acc: Int, enabled: Bool) -> Int {
+  case input {
+    "do()" <> rest -> {
+      parse_mul_rec2(rest, acc, True)
+    }
+    "don't()" <> rest -> {
+      parse_mul_rec2(rest, acc, False)
+    }
+    "mul(" <> rest -> {
+      case string.split_once(rest, ",") {
+        Error(_) -> acc
+        Ok(#(potential_first_number, after_comma)) -> {
+          case parse_up_to_three_digits(potential_first_number) {
+            Error(_) -> {
+              parse_mul_rec2(rest, acc, enabled)
+            }
+            Ok(first_number) -> {
+              case string.split_once(after_comma, ")") {
+                Error(_) -> acc
+                Ok(#(potential_second_number, potential_new_rest)) -> {
+                  case parse_up_to_three_digits(potential_second_number) {
+                    Error(_) -> parse_mul_rec2(rest, acc, enabled)
+                    Ok(second_number) -> {
+                      let multiplied_number = case enabled {
+                        False -> 0
+                        True -> first_number * second_number
+                      }
+                      parse_mul_rec2(
+                        potential_new_rest,
+                        multiplied_number + acc,
+                        enabled,
+                      )
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    "" -> acc
+    _ -> {
+      string.drop_start(input, 1) |> parse_mul_rec2(acc, enabled)
+    }
+  }
+}
+
+fn parse_up_to_three_digits(input: String) -> Result(Int, Nil) {
+  use <- bool.guard(string.length(input) > 3, Error(Nil))
+  int.parse(input)
 }
 
 /// parse with state machine
