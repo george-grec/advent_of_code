@@ -1,6 +1,7 @@
 import day1/historian_hysteria
 import day2/red_nosed_reports
 import day3/mull_it_over
+import day4/ceres_search
 import gleam/int
 import gleam/io
 
@@ -27,5 +28,8 @@ pub fn main() {
   )
   io.println(
     "Day 3 - Mull It Over Part 2: " <> int.to_string(mull_it_over.part2()),
+  )
+  io.println(
+    "Day 4 - Ceres Search Part 1: " <> int.to_string(ceres_search.part1()),
   )
 }
