@@ -60,6 +60,93 @@ pub fn part1() {
   |> result.unwrap(0)
 }
 
+pub fn part2() {
+  let filepath = "./src/day4/input.txt"
+
+  let assert Ok(input) = simplifile.read(from: filepath)
+
+  let lines =
+    input
+    |> string.split("\n")
+    |> list.filter(fn(line) { !string.is_empty(line) })
+
+  let map =
+    lines
+    |> list.index_map(fn(line, line_index) {
+      string.to_graphemes(line)
+      |> list.index_map(fn(char, char_index) {
+        #(#(line_index, char_index), char)
+      })
+    })
+    |> list.flatten
+    |> dict.from_list
+
+  lines
+  |> list.index_map(fn(line, line_index) {
+    string.to_graphemes(line)
+    |> list.index_map(fn(char, char_index) {
+      case char {
+        "A" -> {
+          let north_east = mas_north_east(line_index, char_index, map)
+          let south_east = mas_south_east(line_index, char_index, map)
+          let south_west = mas_south_west(line_index, char_index, map)
+          let north_west = mas_north_west(line_index, char_index, map)
+
+          case north_east + south_east + south_west + north_west == 2 {
+            False -> 0
+            True -> 1
+          }
+        }
+        _ -> 0
+      }
+    })
+    |> list.reduce(int.add)
+    |> result.unwrap(0)
+  })
+  |> list.reduce(int.add)
+  |> result.unwrap(0)
+}
+
+fn mas_north_west(line_index, char_index, map) {
+  let m = get_or_blank(map, line_index - 1, char_index - 1)
+  let s = get_or_blank(map, line_index + 1, char_index + 1)
+
+  case m <> s == "MS" {
+    False -> 0
+    True -> 1
+  }
+}
+
+fn mas_north_east(line_index, char_index, map) {
+  let m = get_or_blank(map, line_index - 1, char_index + 1)
+  let s = get_or_blank(map, line_index + 1, char_index - 1)
+
+  case m <> s == "MS" {
+    False -> 0
+    True -> 1
+  }
+}
+
+fn mas_south_east(line_index, char_index, map) {
+  let m = get_or_blank(map, line_index + 1, char_index + 1)
+  let s = get_or_blank(map, line_index - 1, char_index - 1)
+
+  case m <> s == "MS" {
+    False -> 0
+    True -> 1
+  }
+}
+
+fn mas_south_west(line_index, char_index, map) {
+  let m = get_or_blank(map, line_index + 1, char_index - 1)
+  let s = get_or_blank(map, line_index - 1, char_index + 1)
+
+  case m <> s == "MS" {
+    False -> 0
+    True -> 1
+  }
+}
+
 fn xmas_north(
   line_index: Int,
   char_index: Int,

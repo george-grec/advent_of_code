@@ -32,4 +32,7 @@ pub fn main() {
   io.println(
     "Day 4 - Ceres Search Part 1: " <> int.to_string(ceres_search.part1()),
   )
+  io.println(
+    "Day 4 - Ceres Search Part 2: " <> int.to_string(ceres_search.part2()),
+  )
 }
